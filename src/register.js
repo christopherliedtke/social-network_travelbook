@@ -39,7 +39,11 @@ export default class Register extends Component {
     render() {
         return (
             <div className="register">
-                {this.state.error && <div className="error">Error</div>}
+                {this.state.error && (
+                    <div className="error">
+                        Oh, something went wrong. Please try again!
+                    </div>
+                )}
                 <input
                     name="first"
                     placeholder="First Name"
@@ -62,9 +66,12 @@ export default class Register extends Component {
                     placeholder="Password"
                     onChange={e => this.handleChange(e)}
                 />
-                <button className="btn" onClick={() => this.submit()}>
+                <button className="btn-primary" onClick={() => this.submit()}>
                     Register
                 </button>
+                <p>
+                    Already a member? <a href="#">Log in</a>
+                </p>
             </div>
         );
     }

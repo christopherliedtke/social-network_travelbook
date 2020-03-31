@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const compression = require("compression");
 
+const port = process.env.PORT || 8080;
+
 app.use(compression());
 
 if (process.env.NODE_ENV != "production") {
@@ -85,6 +87,6 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(8080, function() {
-    console.log("I'm listening.");
+app.listen(port, function() {
+    console.log("-----> Server is listening...");
 });

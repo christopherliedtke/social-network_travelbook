@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap");
+
+:root {
+    --light-shade: rgb(255, 255, 255);
+    --light-accent: rgb(250, 250, 250);
+    --dark-shade: rgb(39, 44, 81);
+    --primary: rgb(44, 166, 161);
+    --secondary: rgb(255, 88, 49);
+    --tertiary: rgb(248, 241, 159);
+    --title-font: "Raleway", sans-serif;
+    --reg-font: "Montserrat", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: var(--reg-font);
+    color: var(--dark-shade);
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--light-shade);
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--title-font);
+}
+
+h1 {
+    font-size: 3em;
+}
+
+.container {
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    /* display: block; */
+    min-width: 250px;
+    padding: 14px 18px 10px 18px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: solid 1px #eee;
+}
+
+input:focus {
+    border-color: var(--secondary);
+}
+
+button {
+    /* display: block; */
+    padding: 12px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1em;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--light-shade);
+}
+
+.btn-primary:hover {
+    background-color: var(--light-shade);
+    color: var(--dark-shade);
+    border-color: var(--dark-shade);
+}
+
+input:focus,
+button:focus {
+    outline: none;
+}
+
+.register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
+    margin: 30px;
+    background-color: var(--light-accent);
+    border: solid 1px #eee;
+    border-radius: 5px;
+}
+
+.error {
+    margin: 20px 0;
+    color: var(--secondary);
+}

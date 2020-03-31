@@ -3,8 +3,10 @@ import Register from "./register";
 
 export default function Welcome() {
     return (
-        <div>
-            <div className="welcome">Welcome</div>
+        <div className="container">
+            <h1>[Social Network]</h1>
+            <p>Join now!!!</p>
+            <img src="logo.png" alt=""></img>
             <Register />
         </div>
     );
