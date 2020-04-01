@@ -1,13 +1,26 @@
 import React from "react";
+import { HashRouter, Route } from "react-router-dom";
 import Register from "./register";
+import Login from "./login";
+import ResetPassword from "./resetpassword";
 
 export default function Welcome() {
     return (
-        <div className="container">
-            <h1>[Social Network]</h1>
-            <p>Join now!!!</p>
-            <img src="logo.png" alt=""></img>
-            <Register />
-        </div>
+        <HashRouter>
+            <section className="welcome">
+                <div className="container">
+                    <img src="logo_large.png" alt=""></img>
+                    <p>Connect with passionate travellers around the world</p>
+                    <div>
+                        <Route exact path="/" component={Register} />
+                        <Route path="/login" component={Login} />
+                        <Route
+                            path="/reset-password"
+                            component={ResetPassword}
+                        />
+                    </div>
+                </div>
+            </section>
+        </HashRouter>
     );
 }

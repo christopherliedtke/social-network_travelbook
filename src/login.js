@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "./axios";
 
-export default class Register extends Component {
+export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
     submit() {
         axios
-            .post("/register", {
-                firstName: this.state.first,
-                lastName: this.state.last,
+            .post("/login", {
                 email: this.state.email,
                 password: this.state.password
             })
@@ -25,7 +23,7 @@ export default class Register extends Component {
                 }
             })
             .catch(err => {
-                console.log("Error on submit() in POST to /register: ", err);
+                console.log("Error on submit() in POST to /login: ", err);
                 this.setState({
                     error: true
                 });
@@ -39,23 +37,13 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div className="register">
-                <h4>Register</h4>
+            <div className="login">
+                <h4>Login</h4>
                 {this.state.error && (
                     <div className="error">
                         Oh, something went wrong. Please try again!
                     </div>
                 )}
-                <input
-                    name="first"
-                    placeholder="First Name"
-                    onChange={e => this.handleChange(e)}
-                />
-                <input
-                    name="last"
-                    placeholder="Last Name"
-                    onChange={e => this.handleChange(e)}
-                />
                 <input
                     name="email"
                     type="email"
@@ -69,11 +57,12 @@ export default class Register extends Component {
                     onChange={e => this.handleChange(e)}
                 />
                 <button className="btn-primary" onClick={() => this.submit()}>
-                    Register
+                    Log in
                 </button>
                 <p>
-                    Already a member? <Link to="/login">Log in!</Link>
+                    Not a member? <Link to="/">Register!</Link>
                 </p>
+                <Link to="/reset-password">Forgot password?</Link>
             </div>
         );
     }

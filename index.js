@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const compression = require("compression");
+const ses = require("./utils/ses");
+const cryptoRandomString = require("crypto-random-string");
 
 const port = process.env.PORT || 8080;
 
@@ -33,14 +35,14 @@ app.use(
     })
 );
 
-// const csurf = require("csurf");
-// app.use(csurf());
+const csurf = require("csurf");
+app.use(csurf());
 
-// app.use((req, res, next) => {
-//     res.set("x-frame-options", "DENY");
-//     res.locals.csrfToken = req.csrfToken();
-//     next();
-// });
+app.use((req, res, next) => {
+    // res.set("x-frame-options", "DENY");
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
 
 app.get("/welcome", (req, res) => {
     if (!req.session.userId) {
@@ -57,12 +59,11 @@ app.post("/register", (req, res) => {
         .then(hashedPw => {
             db.addUser(firstName, lastName, email, hashedPw)
                 .then(response => {
-                    req.session.userId = response.rows[0]["email"];
+                    req.session.userId = response.rows[0]["id"];
                     req.session.firstName = response.rows[0]["first_name"];
                     req.session.lastName = response.rows[0]["last_name"];
                     req.session.email = response.rows[0]["email"];
                     req.session.imageUrl = response.rows[0]["image_url"];
-
                     res.json({ success: true });
                 })
                 .catch(err => {
@@ -75,6 +76,100 @@ app.post("/register", (req, res) => {
         })
         .catch(err => {
             console.log("Error on hash() in POST to /register: ", err);
+            res.json({ success: false });
+        });
+});
+
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+
+    db.getUser(email)
+        .then(response => {
+            compare(password, response.rows[0].password)
+                .then(result => {
+                    if (result) {
+                        req.session.userId = response.rows[0]["id"];
+                        req.session.firstName = response.rows[0]["first_name"];
+                        req.session.lastName = response.rows[0]["last_name"];
+                        req.session.email = response.rows[0]["email"];
+                        req.session.imageUrl = response.rows[0]["image_url"];
+                        res.json({ success: true });
+                    } else {
+                        console.log("Password does not match!");
+                        res.json({ success: false });
+                    }
+                })
+                .catch(err => {
+                    console.log("Error on compare() in POST to /login: ", err);
+                    res.json({ success: false });
+                });
+        })
+        .catch(err => {
+            console.log("Error on getUser() in POST to /login: ", err);
+            res.json({ success: false });
+        });
+});
+
+app.post("/password/reset/start", (req, res) => {
+    const secretCode = cryptoRandomString({
+        length: 6
+    });
+
+    Promise.all([
+        db.addPasswordResetCode(req.body.email, secretCode),
+        ses.sendEmail(
+            "ggwoods@gmx.de",
+            "Your password reset for Travelbook",
+            `Please use the following code to reset your password on the Travelbook: ${secretCode}`
+        )
+    ])
+        .then(() => {
+            res.json({ success: true });
+        })
+        .catch(err => {
+            console.log(
+                "Error on Promise.all() in POST to /password/reset/start: ",
+                err
+            );
+            res.json({ success: false });
+        });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    const { email, password, code } = req.body;
+
+    db.checkPasswordResetCode(email, code)
+        .then(response => {
+            if (response.rows.length > 0) {
+                hash(password)
+                    .then(hashedPw => {
+                        db.updatePassword(email, hashedPw)
+                            .then(res.json({ success: true }))
+                            .catch(err => {
+                                console.log(
+                                    "Error on updatePassword() on POST to /password/reset/verify: ",
+                                    err
+                                );
+                                res.json({ success: false });
+                            });
+                    })
+                    .catch(err => {
+                        console.log(
+                            "Error on hash() in POST to /password/reset/verify: ",
+                            err
+                        );
+                        res.json({ success: false });
+                    });
+            } else {
+                console.log("No valid email-code combination in db found!");
+                res.json({ success: false });
+            }
+        })
+        .catch(err => {
+            console.log(
+                "Error on checkPasswordResetCode() on POST to /password/reset/verify: ",
+                err
+            );
             res.json({ success: false });
         });
 });

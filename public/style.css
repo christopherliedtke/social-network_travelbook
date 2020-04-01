@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway:800&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:500|Raleway:800&display=swap");
 
 :root {
     --light-shade: rgb(255, 255, 255);
@@ -27,6 +27,15 @@ body {
     background: var(--light-shade);
 }
 
+main {
+    align-self: stretch;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+
 h1,
 h2,
 h3,
@@ -38,6 +47,18 @@ h1 {
     font-size: 3em;
 }
 
+a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+section {
+    padding: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .container {
     max-width: 1200px;
     display: flex;
@@ -45,9 +66,18 @@ h1 {
     align-items: center;
 }
 
+.welcome {
+    background: url("world_map.svg") center center no-repeat
+        rgba(255, 255, 255, 0.9);
+    background-blend-mode: overlay;
+}
+
+.welcome img {
+    width: 40vw;
+    margin-bottom: 30px;
+}
+
 input {
-    /* display: block; */
-    min-width: 250px;
     padding: 14px 18px 10px 18px;
     margin: 5px 0;
     border-radius: 5px;
@@ -63,8 +93,9 @@ button {
     padding: 12px 20px;
     margin: 10px 0;
     border-radius: 5px;
-    font-weight: bold;
-    font-size: 1em;
+    /* font-weight: bold; */
+    /* letter-spacing: 0.03em; */
+    /* font-size: 1em; */
     border: 1px solid transparent;
     cursor: pointer;
     transition: ease-in-out 0.2s;
@@ -86,13 +117,19 @@ button:focus {
     outline: none;
 }
 
-.register {
+.register,
+.login,
+.password-reset {
+    background: url("arrow.svg") center center no-repeat
+        rgba(250, 250, 250, 0.8);
+    background-blend-mode: overlay;
+    background-size: contain;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 60px;
+    padding: 60px 80px;
     margin: 30px;
-    background-color: var(--light-accent);
+    /* background-color: var(--light-accent); */
     border: solid 1px #eee;
     border-radius: 5px;
 }
