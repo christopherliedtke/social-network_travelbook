@@ -1,10 +1,34 @@
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 8080;
 const compression = require("compression");
 const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
+const db = require("./utils/db");
+const { hash, compare } = require("./utils/bcrypt");
+const s3 = require("./utils/s3");
+const conf = require("./config");
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
 
-const port = process.env.PORT || 8080;
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
 
 app.use(compression());
 
@@ -18,14 +42,9 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
-
-const db = require("./utils/db");
-
-const { hash, compare } = require("./utils/bcrypt");
+app.use(express.json());
 
 app.use(express.static("./public"));
-
-app.use(express.json());
 
 const cookieSession = require("cookie-session");
 app.use(
@@ -115,20 +134,35 @@ app.post("/password/reset/start", (req, res) => {
         length: 6
     });
 
-    Promise.all([
-        db.addPasswordResetCode(req.body.email, secretCode),
-        ses.sendEmail(
-            "ggwoods@gmx.de",
-            "Your password reset for Travelbook",
-            `Please use the following code to reset your password on the Travelbook: ${secretCode}`
-        )
-    ])
-        .then(() => {
-            res.json({ success: true });
+    db.getUser(req.body.email)
+        .then(response => {
+            if (response.rows.length > 0) {
+                //
+                Promise.all([
+                    db.addPasswordResetCode(req.body.email, secretCode),
+                    ses.sendEmail(
+                        "ggwoods@gmx.de",
+                        "Your password reset for Travelbook",
+                        `Please use the following code to reset your password on the Travelbook: ${secretCode}`
+                    )
+                ])
+                    .then(() => {
+                        res.json({ success: true });
+                    })
+                    .catch(err => {
+                        console.log(
+                            "Error on Promise.all() in POST to /password/reset/start: ",
+                            err
+                        );
+                        res.json({ success: false });
+                    });
+            } else {
+                res.json({ success: false });
+            }
         })
         .catch(err => {
             console.log(
-                "Error on Promise.all() in POST to /password/reset/start: ",
+                "Error on getUser() in POST to /password/reset/start: ",
                 err
             );
             res.json({ success: false });
@@ -173,6 +207,38 @@ app.post("/password/reset/verify", (req, res) => {
             res.json({ success: false });
         });
 });
+
+app.get("/user", async (req, res) => {
+    const { email } = req.session;
+
+    try {
+        const response = await db.getUser(email);
+        res.json(response.rows[0]);
+    } catch (err) {
+        console.log("Error on getUser() on POST to /user: ", err);
+        res.json({ success: false });
+    }
+});
+
+app.post(
+    "/updateProfilePicture",
+    uploader.single("file"),
+    s3.upload,
+    async (req, res) => {
+        const url = conf.s3Url + req.file.filename;
+
+        try {
+            await db.updateImageUrl(req.session.email, url);
+            res.json({ url, success: true });
+        } catch (err) {
+            console.log(
+                "Error on updateImageUrl() on POST to /updateProfilePicture: ",
+                err
+            );
+            res.json({ success: false });
+        }
+    }
+);
 
 app.get("*", (req, res) => {
     if (req.session.userId) {

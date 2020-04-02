@@ -39,7 +39,7 @@ export default class Register extends Component {
 
     render() {
         return (
-            <div className="register">
+            <React.Fragment>
                 <h4>Register</h4>
                 {this.state.error && (
                     <div className="error">
@@ -49,22 +49,26 @@ export default class Register extends Component {
                 <input
                     name="first"
                     placeholder="First Name"
+                    autoComplete="given-name"
                     onChange={e => this.handleChange(e)}
                 />
                 <input
                     name="last"
                     placeholder="Last Name"
+                    autoComplete="family-name"
                     onChange={e => this.handleChange(e)}
                 />
                 <input
                     name="email"
                     type="email"
                     placeholder="Email"
+                    autoComplete="email"
                     onChange={e => this.handleChange(e)}
                 />
                 <input
                     name="password"
                     type="password"
+                    autoComplete="new-password"
                     placeholder="Password"
                     onChange={e => this.handleChange(e)}
                 />
@@ -74,7 +78,7 @@ export default class Register extends Component {
                 <p>
                     Already a member? <Link to="/login">Log in!</Link>
                 </p>
-            </div>
+            </React.Fragment>
         );
     }
 }

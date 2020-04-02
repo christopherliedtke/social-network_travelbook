@@ -9,9 +9,11 @@ export default function Welcome() {
         <HashRouter>
             <section className="welcome">
                 <div className="container">
-                    <img src="logo_large.png" alt=""></img>
-                    <p>Connect with passionate travellers around the world</p>
-                    <div>
+                    <img src="img/logo_large.png" alt=""></img>
+                    <p className="text-center">
+                        Connect with passionate travellers around the world
+                    </p>
+                    <div className="box">
                         <Route exact path="/" component={Register} />
                         <Route path="/login" component={Login} />
                         <Route

@@ -37,7 +37,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="login">
+            <React.Fragment>
                 <h4>Login</h4>
                 {this.state.error && (
                     <div className="error">
@@ -48,12 +48,14 @@ export default class Login extends Component {
                     name="email"
                     type="email"
                     placeholder="Email"
+                    autoComplete="email"
                     onChange={e => this.handleChange(e)}
                 />
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
+                    autoComplete="current-password"
                     onChange={e => this.handleChange(e)}
                 />
                 <button className="btn-primary" onClick={() => this.submit()}>
@@ -63,7 +65,7 @@ export default class Login extends Component {
                     Not a member? <Link to="/">Register!</Link>
                 </p>
                 <Link to="/reset-password">Forgot password?</Link>
-            </div>
+            </React.Fragment>
         );
     }
 }

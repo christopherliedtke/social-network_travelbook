@@ -62,7 +62,7 @@ export default class resetpassword extends Component {
             })
             .catch(err => {
                 console.log(
-                    "Error on submitEmail() in POST to /password/reset/verify: ",
+                    "Error on submitCode() in POST to /password/reset/verify: ",
                     err
                 );
                 this.setState({
@@ -82,6 +82,7 @@ export default class resetpassword extends Component {
                     )}
                     <p>Please enter your registered email address.</p>
                     <input
+                        key="email"
                         name="email"
                         type="email"
                         placeholder="Email"
@@ -105,6 +106,7 @@ export default class resetpassword extends Component {
                     )}
                     <p>Please enter the code you received by email.</p>
                     <input
+                        key="code"
                         name="code"
                         placeholder="code"
                         onChange={e => this.handleChange(e)}
@@ -113,6 +115,7 @@ export default class resetpassword extends Component {
                     <input
                         name="password"
                         type="password"
+                        autoComplete="new-password"
                         placeholder="new password"
                         onChange={e => this.handleChange(e)}
                     />
@@ -128,7 +131,7 @@ export default class resetpassword extends Component {
             return (
                 <React.Fragment>
                     <p>
-                        Your password has successfully been changed.
+                        Your password has successfully been changed.{" "}
                         <Link to="/login">Login!</Link>
                     </p>
                 </React.Fragment>
@@ -137,10 +140,10 @@ export default class resetpassword extends Component {
     }
     render() {
         return (
-            <div className="password-reset">
+            <React.Fragment>
                 <h4>Reset Password</h4>
                 {this.getCurrentDisplay()}
-            </div>
+            </React.Fragment>
         );
     }
 }
