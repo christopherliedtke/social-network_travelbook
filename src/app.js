@@ -28,6 +28,8 @@ export default class App extends Component {
             );
     }
     updateUrl(url) {
+        console.log("url: ", url);
+
         if (url) {
             this.setState({
                 imgUrl: url
@@ -42,7 +44,7 @@ export default class App extends Component {
                     first={this.state.first}
                     last={this.state.last}
                     imgUrl={this.state.imgUrl}
-                    updateUrl={() => this.updateUrl()}
+                    updateUrl={e => this.updateUrl(e)}
                 />
                 <section>SECTION in App</section>
             </React.Fragment>

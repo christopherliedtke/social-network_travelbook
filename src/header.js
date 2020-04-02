@@ -14,6 +14,11 @@ export default class Header extends Component {
             uploaderVisible: !this.state.uploaderVisible
         });
     }
+    updateUrl(url) {
+        console.log("url: ", url);
+
+        this.props.updateUrl(url);
+    }
     render() {
         return (
             <header>
@@ -28,7 +33,7 @@ export default class Header extends Component {
                 {this.state.uploaderVisible && (
                     <Uploader
                         toggleModal={() => this.toggleModal()}
-                        updateUrl={() => this.props.updateUrl()}
+                        updateUrl={e => this.updateUrl(e)}
                     />
                 )}
             </header>

@@ -13,6 +13,7 @@ export default class ProfilePicture extends Component {
                     className="profile-pic"
                     src={this.props.imgUrl}
                     height="45px"
+                    width="45px"
                     alt={fullName}
                 ></img>
             </React.Fragment>

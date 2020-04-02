@@ -9,7 +9,7 @@ export default class Uploader extends Component {
     componentDidMount() {}
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.files[0]
         });
     }
     submit() {
@@ -20,11 +20,9 @@ export default class Uploader extends Component {
             axios
                 .post("/updateProfilePicture", formData)
                 .then(response => {
-                    console.log("response in submit new pic: ", response);
+                    console.log("response.data.url: ", response.data.url);
 
-                    // give url to App
-                    this.props.updateUrl(response.url);
-                    // toggle modal
+                    this.props.updateUrl(response.data.url);
                     this.props.toggleModal();
                 })
                 .catch(err => {

@@ -14,8 +14,6 @@ const s3 = new aws.S3({
 });
 
 module.exports.upload = function(req, res, next) {
-    console.log("req.file: ", req.file);
-
     if (!req.file) {
         console.log("Multer did not work");
         res.sendStatus(500);
