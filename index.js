@@ -240,6 +240,11 @@ app.post(
     }
 );
 
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.json({ success: true });
+});
+
 app.get("*", (req, res) => {
     if (req.session.userId) {
         res.sendFile(__dirname + "/index.html");

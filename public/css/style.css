@@ -73,6 +73,15 @@ header > div {
     align-items: center;
 }
 
+.logout {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.logout i {
+    /* color: var(--primary); */
+}
+
 .modal {
     position: fixed;
     top: 0;

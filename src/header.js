@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ProfilePicture from "./profilepicture";
 import Uploader from "./uploader";
+import Logout from "./logout";
 
 export default class Header extends Component {
     constructor(props) {
@@ -23,12 +24,15 @@ export default class Header extends Component {
         return (
             <header>
                 <img src="img/logo_only.png" height="35px" alt="logo"></img>
-                <div onClick={() => this.toggleModal()}>
-                    <ProfilePicture
-                        first={this.props.first}
-                        last={this.props.last}
-                        imgUrl={this.props.imgUrl}
-                    />
+                <div>
+                    <div onClick={() => this.toggleModal()}>
+                        <ProfilePicture
+                            first={this.props.first}
+                            last={this.props.last}
+                            imgUrl={this.props.imgUrl}
+                        />
+                    </div>
+                    <Logout />
                 </div>
                 {this.state.uploaderVisible && (
                     <Uploader
