@@ -240,6 +240,16 @@ app.post(
     }
 );
 
+app.post("/updateBio", async (req, res) => {
+    try {
+        await db.updateBio(req.session.email, req.body.bio);
+        res.json({ success: true });
+    } catch (err) {
+        console.log("Error on updateBio() on POST to /updateBio: ", err);
+        res.json({ success: false });
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });

@@ -20,8 +20,6 @@ export default class Uploader extends Component {
             axios
                 .post("/updateProfilePicture", formData)
                 .then(response => {
-                    console.log("response.data.url: ", response.data.url);
-
                     this.props.updateUrl(response.data.url);
                     this.props.toggleModal();
                 })
@@ -49,7 +47,7 @@ export default class Uploader extends Component {
                         <div className="close" onClick={this.props.toggleModal}>
                             <i className="fas fa-times"></i>
                         </div>
-                        <h3>Choose a new profile image</h3>
+                        <h3>Choose a new profile picture!</h3>
                         {this.state.error && (
                             <div className="error">
                                 Oh, something went wrong. Please try again!
@@ -63,8 +61,12 @@ export default class Uploader extends Component {
                             accept="image/*"
                             onChange={e => this.handleChange(e)}
                         />
-                        <label id="file-label" htmlFor="file">
-                            Choose file
+                        <label
+                            className={this.state.file && "ready"}
+                            id="file-label"
+                            htmlFor="file"
+                        >
+                            {!this.state.file ? "Choose file" : "Ready"}
                         </label>
                         <button
                             className="btn-primary"
