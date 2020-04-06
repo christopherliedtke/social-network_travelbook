@@ -12,7 +12,7 @@ export default class Header extends Component {
     render() {
         return (
             <header>
-                <img src="img/logo_only.png" height="35px" alt="logo"></img>
+                <img src="/img/logo_only.png" height="35px" alt="logo"></img>
                 <div>
                     <div onClick={() => this.props.toggleModal()}>
                         <ProfilePicture

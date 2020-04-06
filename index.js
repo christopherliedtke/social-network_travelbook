@@ -13,21 +13,21 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 
 const diskStorage = multer.diskStorage({
-    destination: function(req, file, callback) {
+    destination: function (req, file, callback) {
         callback(null, __dirname + "/uploads");
     },
-    filename: function(req, file, callback) {
-        uidSafe(24).then(function(uid) {
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
             callback(null, uid + path.extname(file.originalname));
         });
-    }
+    },
 });
 
 const uploader = multer({
     storage: diskStorage,
     limits: {
-        fileSize: 2097152
-    }
+        fileSize: 2097152,
+    },
 });
 
 app.use(compression());
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV != "production") {
     app.use(
         "/bundle.js",
         require("http-proxy-middleware")({
-            target: "http://localhost:8081/"
+            target: "http://localhost:8081/",
         })
     );
 } else {
@@ -50,7 +50,7 @@ const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
         secret: "I'm always angry.",
-        maxAge: 1000 * 60 * 60 * 24 * 14
+        maxAge: 1000 * 60 * 60 * 24 * 14,
     })
 );
 
@@ -75,9 +75,9 @@ app.post("/register", (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     hash(password)
-        .then(hashedPw => {
+        .then((hashedPw) => {
             db.addUser(firstName, lastName, email, hashedPw)
-                .then(response => {
+                .then((response) => {
                     req.session.userId = response.rows[0]["id"];
                     req.session.firstName = response.rows[0]["first_name"];
                     req.session.lastName = response.rows[0]["last_name"];
@@ -85,7 +85,7 @@ app.post("/register", (req, res) => {
                     req.session.imageUrl = response.rows[0]["image_url"];
                     res.json({ success: true });
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(
                         "Error on addUser() in POST to /register: ",
                         err
@@ -93,7 +93,7 @@ app.post("/register", (req, res) => {
                     res.json({ success: false });
                 });
         })
-        .catch(err => {
+        .catch((err) => {
             console.log("Error on hash() in POST to /register: ", err);
             res.json({ success: false });
         });
@@ -103,9 +103,9 @@ app.post("/login", (req, res) => {
     const { email, password } = req.body;
 
     db.getUser(email)
-        .then(response => {
+        .then((response) => {
             compare(password, response.rows[0].password)
-                .then(result => {
+                .then((result) => {
                     if (result) {
                         req.session.userId = response.rows[0]["id"];
                         req.session.firstName = response.rows[0]["first_name"];
@@ -118,12 +118,12 @@ app.post("/login", (req, res) => {
                         res.json({ success: false });
                     }
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log("Error on compare() in POST to /login: ", err);
                     res.json({ success: false });
                 });
         })
-        .catch(err => {
+        .catch((err) => {
             console.log("Error on getUser() in POST to /login: ", err);
             res.json({ success: false });
         });
@@ -131,11 +131,11 @@ app.post("/login", (req, res) => {
 
 app.post("/password/reset/start", (req, res) => {
     const secretCode = cryptoRandomString({
-        length: 6
+        length: 6,
     });
 
     db.getUser(req.body.email)
-        .then(response => {
+        .then((response) => {
             if (response.rows.length > 0) {
                 //
                 Promise.all([
@@ -144,12 +144,12 @@ app.post("/password/reset/start", (req, res) => {
                         "ggwoods@gmx.de",
                         "Your password reset for Travelbook",
                         `Please use the following code to reset your password on the Travelbook: ${secretCode}`
-                    )
+                    ),
                 ])
                     .then(() => {
                         res.json({ success: true });
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.log(
                             "Error on Promise.all() in POST to /password/reset/start: ",
                             err
@@ -160,7 +160,7 @@ app.post("/password/reset/start", (req, res) => {
                 res.json({ success: false });
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(
                 "Error on getUser() in POST to /password/reset/start: ",
                 err
@@ -173,13 +173,13 @@ app.post("/password/reset/verify", (req, res) => {
     const { email, password, code } = req.body;
 
     db.checkPasswordResetCode(email, code)
-        .then(response => {
+        .then((response) => {
             if (response.rows.length > 0) {
                 hash(password)
-                    .then(hashedPw => {
+                    .then((hashedPw) => {
                         db.updatePassword(email, hashedPw)
                             .then(res.json({ success: true }))
-                            .catch(err => {
+                            .catch((err) => {
                                 console.log(
                                     "Error on updatePassword() on POST to /password/reset/verify: ",
                                     err
@@ -187,7 +187,7 @@ app.post("/password/reset/verify", (req, res) => {
                                 res.json({ success: false });
                             });
                     })
-                    .catch(err => {
+                    .catch((err) => {
                         console.log(
                             "Error on hash() in POST to /password/reset/verify: ",
                             err
@@ -199,7 +199,7 @@ app.post("/password/reset/verify", (req, res) => {
                 res.json({ success: false });
             }
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(
                 "Error on checkPasswordResetCode() on POST to /password/reset/verify: ",
                 err
@@ -250,6 +250,28 @@ app.post("/updateBio", async (req, res) => {
     }
 });
 
+app.get("/user/:id.json", (req, res) => {
+    if (req.params.id == req.session.userId) {
+        res.json({ redirect: true });
+    } else {
+        db.getUserById(req.params.id)
+            .then((response) => {
+                if (response.rows[0]) {
+                    res.json({ data: response.rows[0] });
+                } else {
+                    res.json({ redirect: true });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    "Error on getUserById() on GET to /user/id:json: ",
+                    err
+                );
+                res.json({ success: false });
+            });
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });
@@ -263,6 +285,6 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(port, function() {
+app.listen(port, function () {
     console.log("-----> Server is listening...");
 });

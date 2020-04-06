@@ -130,11 +130,20 @@ section.welcome {
     align-items: center;
 }
 .profile .container {
+    margin-top: 50px;
     flex-direction: row;
     align-items: flex-start;
 }
 
-.welcome {
+.profile .container h3 {
+    margin-top: 0;
+}
+
+.profile .profile-pic {
+    margin-bottom: 30px;
+}
+
+section {
     background: url("../img/world_map.svg") center center no-repeat
         rgba(255, 255, 255, 0.9);
     background-blend-mode: overlay;
@@ -236,7 +245,7 @@ textarea:focus {
 }
 
 .bio-txt-box {
-    min-width: 300px;
+    width: 100%;
     min-height: 200px;
     padding: 15px;
     background: rgba(250, 250, 250, 0.8);
@@ -254,6 +263,7 @@ textarea:focus {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 }
 
 .position-relative {
@@ -269,10 +279,11 @@ textarea:focus {
 
 /* #MEDIA QUERIES */
 @media only screen and (max-width: 768px) {
-    .container {
+    .profile .container {
         grid-template-columns: 1fr;
         max-width: 450px;
         padding: 10px;
+        margin-top: 10px;
     }
 
     .box {
@@ -282,6 +293,6 @@ textarea:focus {
 
     .profile .container {
         flex-direction: column;
-        /* justify-content: flex-start; */
+        align-items: center;
     }
 }
