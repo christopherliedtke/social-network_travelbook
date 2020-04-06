@@ -1,5 +1,5 @@
 import React from "react";
-import ProfilePicture from "./profilepicture";
+import ProfilePicture from "./ProfilePicture";
 import Bio from "./Bio";
 
 export default function Profile(props) {
@@ -24,7 +24,7 @@ export default function Profile(props) {
                     first={props.first}
                     last={props.last}
                     bio={props.bio}
-                    updateBio={e => props.updateBio(e)}
+                    updateBio={(e) => props.updateBio(e)}
                 />
             </div>
         </section>

@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Welcome from "./welcome";
-import App from "./app";
+import Welcome from "./Welcome";
+import App from "./App";
 
 ReactDOM.render(
     location.pathname == "/welcome" ? <Welcome /> : <App />,

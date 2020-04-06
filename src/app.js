@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import axios from "./axios";
 import { BrowserRouter, Route } from "react-router-dom";
-import Header from "./header";
-import Uploader from "./uploader";
-import Profile from "./profile";
+import Header from "./Header";
+import Uploader from "./Uploader";
+import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
 
 export default class App extends Component {

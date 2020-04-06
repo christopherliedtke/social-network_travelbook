@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "./axios";
-import ProfilePicture from "./profilepicture";
+import ProfilePicture from "./ProfilePicture";
 
 export default class OtherProfile extends Component {
     constructor(props) {

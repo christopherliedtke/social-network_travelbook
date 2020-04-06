@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import ProfilePicture from "./profilepicture";
-// import Uploader from "./uploader";
-import Logout from "./logout";
+import ProfilePicture from "./ProfilePicture";
+import Logout from "./Logout";
 
 export default class Header extends Component {
     constructor(props) {
