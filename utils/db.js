@@ -92,3 +92,26 @@ module.exports.updateBio = (email, bio) => {
 
     return db.query(q, params);
 };
+
+module.exports.getUsersByName = (searchString) => {
+    const q = `
+        SELECT id, first_name, last_name, image_url 
+        FROM users
+        WHERE first_name ILIKE $1 OR last_name ILIKE $1
+        ORDER BY first_name
+    `;
+    const params = [searchString + "%"];
+
+    return db.query(q, params);
+};
+
+module.exports.getNewestUsers = () => {
+    const q = `
+        SELECT id, first_name, last_name, image_url 
+        FROM users
+        ORDER BY id DESC
+        LIMIT 3
+    `;
+
+    return db.query(q);
+};

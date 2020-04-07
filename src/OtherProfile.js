@@ -9,15 +9,10 @@ export default class OtherProfile extends Component {
     }
     componentDidMount() {
         const id = this.props.match.params.id;
-        // axios get data to /user/${id}.json
-        // to redirect: this.props.history.push('/')
-
         axios
             .get(`/user/${id}.json`)
             .then((response) => {
                 if (response.data.redirect) {
-                    console.log(response.data.redirect);
-
                     this.props.history.push("/");
                 } else {
                     this.setState({

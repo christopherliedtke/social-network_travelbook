@@ -272,6 +272,21 @@ app.get("/user/:id.json", (req, res) => {
     }
 });
 
+app.get("/findPeople", async (req, res) => {
+    try {
+        let response;
+        if (req.query.q == "") {
+            response = await db.getNewestUsers();
+        } else {
+            response = await db.getUsersByName(req.query.q);
+        }
+        res.json(response.rows);
+    } catch (err) {
+        console.log("Error on get*Users*() on GET to /findPeople: ", err);
+        res.json({ success: false });
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });

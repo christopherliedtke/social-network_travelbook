@@ -7,29 +7,20 @@ import axios from "../axios";
 jest.mock("../axios.js");
 
 test("Add button is rendered in <Bio /> if no bio is passed to it", () => {
-    const { container } = render(
-        <Bio first="Chris" last="Liedtke" imgUrl="dogs.png" />
-    );
+    const { container } = render(<Bio first="Chris" last="Liedtke" />);
     expect(container.querySelector("button").innerHTML).toBe("Add bio");
 });
 
 test("Edit button is rendered in <Bio /> if bio is passed to it", () => {
     const { container } = render(
-        <Bio first="Chris" last="Liedtke" imgUrl="dogs.png" bio="My bio" />
+        <Bio first="Chris" last="Liedtke" bio="My bio" />
     );
     expect(container.querySelector("button").innerHTML).toBe("Edit bio");
 });
 
 test("Clicking either the 'Add' or 'Edit' button causes a textarea and a 'Save' button to be rendered.", () => {
-    const myMockOnClick = jest.fn();
     const { container } = render(
-        <Bio
-            first="Chris"
-            last="Liedtke"
-            imgUrl="dogs.png"
-            bio="My bio "
-            onClick="myMockOnClick"
-        />
+        <Bio first="Chris" last="Liedtke" bio="My bio " />
     );
     fireEvent.click(container.querySelector("button"));
     expect(container.querySelector("div").innerHTML).toContain("textarea");
@@ -42,7 +33,7 @@ test("Clicking the 'Save' button causes an ajax request", async () => {
     });
 
     const { container } = render(
-        <Bio first="Chris" last="Liedtke" imgUrl="dogs.png" bio="My bio" />
+        <Bio first="Chris" last="Liedtke" bio="My bio" />
     );
 
     fireEvent.click(container.querySelector("button"));
@@ -65,7 +56,6 @@ test("When the mock request is successful, the function that was passed as a pro
         <Bio
             first="Chris"
             last="Liedtke"
-            imgUrl="dogs.png"
             bio="My bio"
             updateBio={myMockOnClick}
         />

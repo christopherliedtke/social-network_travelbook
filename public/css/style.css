@@ -43,6 +43,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    opacity: 0.7;
+}
+
 main {
     align-self: stretch;
     flex-grow: 1;
@@ -71,6 +75,11 @@ img.profile-pic {
 header div {
     display: flex;
     align-items: center;
+}
+
+.nav-link {
+    margin: 0 10px;
+    color: var(--dark-shade);
 }
 
 .logout {
@@ -139,15 +148,28 @@ section.welcome {
     margin-top: 0;
 }
 
+.search-results {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    justify-items: center;
+    align-items: center;
+}
+
+.searchbar {
+    margin: 30px 0;
+}
+
 .profile .profile-pic {
     margin-bottom: 30px;
 }
 
 section {
-    background: url("../img/world_map.svg") center center no-repeat
+    background: url("../img/world_map.svg") top center no-repeat
         rgba(255, 255, 255, 0.9);
     background-blend-mode: overlay;
-    background-size: cover;
+    background-size: contain;
 }
 
 .welcome img {
@@ -167,6 +189,10 @@ textarea {
 input:focus,
 textarea:focus {
     border-color: var(--secondary);
+}
+
+.searchbar input {
+    width: 100%;
 }
 
 .inputfile {
@@ -279,6 +305,14 @@ textarea:focus {
 
 /* #MEDIA QUERIES */
 @media only screen and (max-width: 768px) {
+    header {
+        padding: 5px;
+    }
+
+    .logout {
+        margin: 0 10px;
+    }
+
     .profile .container {
         grid-template-columns: 1fr;
         max-width: 450px;
@@ -294,5 +328,9 @@ textarea:focus {
     .profile .container {
         flex-direction: column;
         align-items: center;
+    }
+
+    .search-results {
+        grid-template-columns: 1fr;
     }
 }

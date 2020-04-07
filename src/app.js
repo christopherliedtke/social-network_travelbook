@@ -5,6 +5,7 @@ import Header from "./Header";
 import Uploader from "./Uploader";
 import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
+import FindPeople from "./FindPeople";
 
 export default class App extends Component {
     constructor() {
@@ -58,8 +59,8 @@ export default class App extends Component {
                         first={this.state.first}
                         last={this.state.last}
                         imgUrl={this.state.imgUrl}
-                        updateUrl={(e) => this.updateUrl(e)}
-                        toggleModal={() => this.toggleModal()}
+                        // updateUrl={(e) => this.updateUrl(e)}
+                        // toggleModal={() => this.toggleModal()}
                     />
 
                     <Route
@@ -69,6 +70,17 @@ export default class App extends Component {
                                 key={props.match.url}
                                 match={props.match}
                                 history={props.history}
+                            />
+                        )}
+                    />
+
+                    <Route
+                        path="/users"
+                        render={(props) => (
+                            <FindPeople
+                                key={props.match.url}
+                                // match={props.match}
+                                // history={props.history}
                             />
                         )}
                     />
