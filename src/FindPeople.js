@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "./axios";
+import { Link } from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
 
 export default function FindPeople() {
@@ -38,25 +39,31 @@ export default function FindPeople() {
                     ></input>
                     {searchString && (
                         <h4 className="text-center">
-                            Results for <span>{searchString}</span>
+                            Results for{" "}
+                            <span className="sec-color">{searchString}</span>
                         </h4>
                     )}
                 </div>
                 <div className="search-results">
                     {searchResults.map((searchResult) => {
                         return (
-                            <div key={searchResult.id}>
-                                <ProfilePicture
-                                    first={searchResult["first_name"]}
-                                    last={searchResult["last_name"]}
-                                    imgUrl={searchResult["image_url"]}
-                                    width="200px"
-                                    height="200px"
-                                />
-                                <p>
-                                    {searchResult["first_name"]}{" "}
-                                    {searchResult["last_name"]}
-                                </p>
+                            <div
+                                className="search-result"
+                                key={searchResult.id}
+                            >
+                                <Link to={`/user/${searchResult.id}`}>
+                                    <ProfilePicture
+                                        first={searchResult["first_name"]}
+                                        last={searchResult["last_name"]}
+                                        imgUrl={searchResult["image_url"]}
+                                        width="180px"
+                                        height="180px"
+                                    />
+                                    <p>
+                                        {searchResult["first_name"]}{" "}
+                                        {searchResult["last_name"]}
+                                    </p>
+                                </Link>
                             </div>
                         );
                     })}

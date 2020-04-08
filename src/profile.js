@@ -5,7 +5,10 @@ import Bio from "./Bio";
 export default function Profile(props) {
     return (
         <section className="profile">
-            <div className="container">
+            <div className="container box">
+                <h3>
+                    {props.first} {props.last}
+                </h3>
                 <div
                     className="position-relative"
                     onClick={() => props.toggleModal()}

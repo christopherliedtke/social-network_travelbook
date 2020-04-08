@@ -12,14 +12,22 @@ export default class Header extends Component {
     render() {
         return (
             <header>
-                <img src="/img/logo_only.png" height="35px" alt="logo"></img>
                 <div>
-                    <Link className="nav-link" to="/users">
-                        Find People
+                    <Link to="/">
+                        <img
+                            src="/img/logo_only.png"
+                            height="35px"
+                            alt="logo"
+                        ></img>
                     </Link>
                 </div>
+                <div></div>
                 <div>
-                    {/* <div onClick={() => this.props.toggleModal()}> */}
+                    <nav>
+                        <Link className="nav-link" to="/users">
+                            Find People
+                        </Link>
+                    </nav>
                     <Link to="/">
                         <div>
                             <ProfilePicture

@@ -77,8 +77,11 @@ header div {
     align-items: center;
 }
 
+nav {
+    margin: 0 20px;
+}
+
 .nav-link {
-    margin: 0 10px;
     color: var(--dark-shade);
 }
 
@@ -140,8 +143,9 @@ section.welcome {
 }
 .profile .container {
     margin-top: 50px;
-    flex-direction: row;
     align-items: flex-start;
+    /* flex-direction: row;
+    align-items: flex-start; */
 }
 
 .profile .container h3 {
@@ -151,10 +155,21 @@ section.welcome {
 .search-results {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
-    justify-items: center;
-    align-items: center;
+    place-items: center;
+}
+
+.search-result {
+    padding: 25px 30px;
+    background-color: rgba(250, 250, 250, 0.8);
+    border: solid 1px #eee;
+    border-radius: 5px;
+}
+
+.search-result p {
+    margin: 0;
+    padding-top: 20px;
 }
 
 .searchbar {
@@ -255,11 +270,12 @@ textarea:focus {
     text-align: center;
 }
 
+.sec-color {
+    color: var(--secondary);
+}
+
 .box {
-    background: url("../img/arrow.svg") center center no-repeat
-        rgba(250, 250, 250, 0.8);
-    background-blend-mode: overlay;
-    background-size: contain;
+    background: rgba(250, 250, 250, 0.8);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -270,11 +286,18 @@ textarea:focus {
     border-radius: 5px;
 }
 
+.welcome .box {
+    background: url("../img/arrow.svg") center center no-repeat
+        rgba(250, 250, 250, 0.8);
+    background-blend-mode: overlay;
+    background-size: contain;
+}
+
 .bio-txt-box {
     width: 100%;
     min-height: 200px;
     padding: 15px;
-    background: rgba(250, 250, 250, 0.8);
+    /* background: rgba(250, 250, 250, 0.8); */
     border: solid 1px #eeeeee;
     border-radius: 5px;
 }
@@ -285,7 +308,7 @@ textarea:focus {
 }
 
 .bio {
-    margin: 0 30px;
+    /* margin: 0 30px; */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -304,6 +327,16 @@ textarea:focus {
 }
 
 /* #MEDIA QUERIES */
+@media only screen and (max-width: 1200px) {
+    .search-results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .search-result {
+        padding: 15px 20px;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     header {
         padding: 5px;
@@ -331,6 +364,12 @@ textarea:focus {
     }
 
     .search-results {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .search-results {
+        grid-template-columns: repeat(1, 1fr);
     }
 }

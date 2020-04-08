@@ -287,6 +287,72 @@ app.get("/findPeople", async (req, res) => {
     }
 });
 
+app.get("/friendship-status/:id", async (req, res) => {
+    try {
+        const response = await db.checkFriendshipStatus(
+            req.params.id,
+            req.session.userId
+        );
+
+        if (response.rows[0]) {
+            if (response.rows[0].accepted) {
+                res.json({ status: "friend" });
+            } else if (response.rows[0]["sender_id"] == req.session.userId) {
+                res.json({ status: "sender" });
+            } else {
+                res.json({ status: "receiver" });
+            }
+        } else {
+            res.json({ status: null });
+        }
+    } catch (err) {
+        console.log(
+            "Error on checkFriendshipStatus() on GET to /friendship-status/:id: ",
+            err
+        );
+        res.json({ success: false });
+    }
+});
+
+app.post("/make-friend-request/:id", async (req, res) => {
+    try {
+        await db.addFriendship(req.params.id, req.session.userId);
+        res.json({ success: true });
+    } catch (err) {
+        console.log(
+            "Error on addFriendship() on GET to /make-friend-request/:id: ",
+            err
+        );
+        res.json({ success: false });
+    }
+});
+
+app.post("/end-friendship/:id", async (req, res) => {
+    try {
+        await db.endFriendship(req.params.id, req.session.userId);
+        res.json({ success: true });
+    } catch (err) {
+        console.log(
+            "Error on endFriendship() on GET to /end-friendship/:id: ",
+            err
+        );
+        res.json({ success: false });
+    }
+});
+
+app.post("/accept-friend-request/:id", async (req, res) => {
+    try {
+        await db.acceptFriendship(req.session.userId, req.params.id);
+        res.json({ success: true });
+    } catch (err) {
+        console.log(
+            "Error on acceptFriendship() on GET to /accept-friend-request/:id: ",
+            err
+        );
+        res.json({ success: false });
+    }
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });

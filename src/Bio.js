@@ -5,24 +5,24 @@ export default class Bio extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showBioEdit: false
+            showBioEdit: false,
         };
     }
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
         });
     }
     editBio() {
         this.setState({
             showBioEdit: true,
-            bio: this.props.bio
+            bio: this.props.bio,
         });
     }
     submitBio() {
         axios
             .post("/updateBio", { bio: this.state.bio })
-            .then(response => {
+            .then((response) => {
                 if (response.data.success) {
                     this.props.updateBio(this.state.bio);
                     this.setState({ showBioEdit: false });
@@ -30,13 +30,13 @@ export default class Bio extends Component {
                     this.setState({ error: true });
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log(
                     "Error on submitBio() in POST to /updateBio: ",
                     err
                 );
                 this.setState({
-                    error: true
+                    error: true,
                 });
             });
     }
@@ -49,7 +49,7 @@ export default class Bio extends Component {
                         cols="40"
                         name="bio"
                         value={this.state.bio}
-                        onChange={e => this.handleChange(e)}
+                        onChange={(e) => this.handleChange(e)}
                     ></textarea>
                     <button
                         className="btn-primary"
@@ -85,10 +85,10 @@ export default class Bio extends Component {
         }
     }
     render() {
-        const fullName = this.props.first + " " + this.props.last;
+        // const fullName = this.props.first + " " + this.props.last;
         return (
             <div className="bio">
-                <h3>{fullName}</h3>
+                {/* <h3>{fullName}</h3> */}
                 {this.getCurrentDisplay()}
             </div>
         );

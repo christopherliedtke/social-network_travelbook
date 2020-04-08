@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "./axios";
 import ProfilePicture from "./ProfilePicture";
+import FriendButton from "./FriendButton";
 
 export default class OtherProfile extends Component {
     constructor(props) {
@@ -27,10 +28,13 @@ export default class OtherProfile extends Component {
     }
 
     render() {
-        const fullName = this.state.first + " " + this.state.last;
+        // const fullName = this.state.first + " " + this.state.last;
         return (
             <section className="profile">
-                <div className="container">
+                <div className="container box">
+                    <h3>
+                        {this.state.first} {this.state.last}
+                    </h3>
                     <div>
                         <ProfilePicture
                             first={this.state.first}
@@ -40,9 +44,9 @@ export default class OtherProfile extends Component {
                         />
                     </div>
                     <div className="bio">
-                        <h3>{fullName}</h3>
                         <div className="bio-txt-box">{this.state.bio}</div>
                     </div>
+                    <FriendButton otherProfileId={this.props.match.params.id} />
                 </div>
             </section>
         );

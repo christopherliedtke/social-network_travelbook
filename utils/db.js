@@ -110,8 +110,55 @@ module.exports.getNewestUsers = () => {
         SELECT id, first_name, last_name, image_url 
         FROM users
         ORDER BY id DESC
-        LIMIT 3
+        LIMIT 9
     `;
 
     return db.query(q);
+};
+
+module.exports.checkFriendshipStatus = (reveiverId, senderId) => {
+    const q = `
+        SELECT * 
+        FROM friendships
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1);
+    `;
+    const params = [reveiverId, senderId];
+
+    return db.query(q, params);
+};
+
+module.exports.addFriendship = (reveiverId, senderId) => {
+    const q = `
+        INSERT INTO friendships (receiver_id, sender_id)
+        VALUES ($1, $2)
+        RETURNING *
+    `;
+    const params = [reveiverId, senderId];
+
+    return db.query(q, params);
+};
+
+module.exports.acceptFriendship = (reveiverId, senderId) => {
+    const q = `
+        UPDATE friendships
+        SET accepted = TRUE
+        WHERE receiver_id = $1 AND sender_id = $2
+        RETURNING *
+    `;
+    const params = [reveiverId, senderId];
+
+    return db.query(q, params);
+};
+
+module.exports.endFriendship = (reveiverId, senderId) => {
+    const q = `
+        DELETE FROM friendships
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1)
+        RETURNING *
+    `;
+    const params = [reveiverId, senderId];
+
+    return db.query(q, params);
 };
