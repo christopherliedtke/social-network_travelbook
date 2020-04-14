@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export function useStatefulFields() {
+export default function useStatefulFields() {
     const [values, setValues] = useState({});
 
     const handleChange = (e) => {

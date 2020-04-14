@@ -353,6 +353,11 @@ app.post("/accept-friend-request/:id", async (req, res) => {
     }
 });
 
+app.get("/friends-and-requests", async (req, res) => {
+    const friends = await db.getFriendsRequests(req.session.userId);
+    res.json(friends.rows);
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });
@@ -367,5 +372,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, function () {
-    console.log("-----> Server is listening...");
+    console.log(`-----> Server is listening to ${port}...`);
 });

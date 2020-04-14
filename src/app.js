@@ -6,6 +6,7 @@ import Uploader from "./Uploader";
 import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
 import FindPeople from "./FindPeople";
+import Friends from "./Friends";
 
 export default class App extends Component {
     constructor() {
@@ -59,8 +60,6 @@ export default class App extends Component {
                         first={this.state.first}
                         last={this.state.last}
                         imgUrl={this.state.imgUrl}
-                        // updateUrl={(e) => this.updateUrl(e)}
-                        // toggleModal={() => this.toggleModal()}
                     />
 
                     <Route
@@ -76,13 +75,12 @@ export default class App extends Component {
 
                     <Route
                         path="/users"
-                        render={(props) => (
-                            <FindPeople
-                                key={props.match.url}
-                                // match={props.match}
-                                // history={props.history}
-                            />
-                        )}
+                        render={(props) => <FindPeople key={props.match.url} />}
+                    />
+
+                    <Route
+                        path="/friends"
+                        render={(props) => <Friends key={props.match.url} />}
                     />
 
                     <Route

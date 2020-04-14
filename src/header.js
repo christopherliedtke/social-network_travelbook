@@ -27,6 +27,9 @@ export default class Header extends Component {
                         <Link className="nav-link" to="/users">
                             Find People
                         </Link>
+                        <Link className="nav-link" to="/friends">
+                            Friends
+                        </Link>
                     </nav>
                     <Link to="/">
                         <div>

@@ -11,27 +11,27 @@ export default class Login extends Component {
         axios
             .post("/login", {
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
             })
-            .then(res => {
+            .then((res) => {
                 if (res.data.success) {
                     location.replace("/");
                 } else {
                     this.setState({
-                        error: true
+                        error: true,
                     });
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log("Error on submit() in POST to /login: ", err);
                 this.setState({
-                    error: true
+                    error: true,
                 });
             });
     }
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.value
+            [target.name]: target.value,
         });
     }
 
@@ -49,14 +49,14 @@ export default class Login extends Component {
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
-                    onChange={e => this.handleChange(e)}
+                    onChange={(e) => this.handleChange(e)}
                 />
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
                     autoComplete="current-password"
-                    onChange={e => this.handleChange(e)}
+                    onChange={(e) => this.handleChange(e)}
                 />
                 <button className="btn-primary" onClick={() => this.submit()}>
                     Log in
