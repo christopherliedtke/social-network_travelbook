@@ -51,12 +51,12 @@ export default function Friends() {
                                             first={friend["first_name"]}
                                             last={friend["last_name"]}
                                             imgUrl={friend["image_url"]}
-                                            width="150px"
-                                            height="150px"
+                                            width="180px"
+                                            height="180px"
                                         />
                                     </Link>
                                     <button
-                                        className="btn-primary"
+                                        className="btn-secondary"
                                         onClick={() =>
                                             dispatch(endFriendship(friend.id))
                                         }
@@ -85,8 +85,8 @@ export default function Friends() {
                                             first={request["first_name"]}
                                             last={request["last_name"]}
                                             imgUrl={request["image_url"]}
-                                            width="150px"
-                                            height="150px"
+                                            width="180px"
+                                            height="180px"
                                         />
                                     </Link>
                                     <button
@@ -98,6 +98,15 @@ export default function Friends() {
                                         }
                                     >
                                         Accept Friend Request
+                                    </button>
+                                    <button
+                                        style={{ marginTop: 0 }}
+                                        className="btn-secondary"
+                                        onClick={() =>
+                                            dispatch(endFriendship(request.id))
+                                        }
+                                    >
+                                        Reject Friend Request
                                     </button>
                                 </div>
                             );

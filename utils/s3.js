@@ -10,10 +10,10 @@ if (process.env.NODE_ENV == "production") {
 
 const s3 = new aws.S3({
     accessKeyId: secrets.AWS_KEY,
-    secretAccessKey: secrets.AWS_SECRET
+    secretAccessKey: secrets.AWS_SECRET,
 });
 
-module.exports.upload = function(req, res, next) {
+module.exports.upload = function (req, res, next) {
     if (!req.file) {
         console.log("Multer did not work");
         res.sendStatus(500);
@@ -29,7 +29,7 @@ module.exports.upload = function(req, res, next) {
             Key: filename,
             Body: fs.createReadStream(path),
             ContentType: mimetype,
-            ContentLength: size
+            ContentLength: size,
         })
         .promise();
 
@@ -38,8 +38,17 @@ module.exports.upload = function(req, res, next) {
             fs.unlink(path, () => {});
             next();
         })
-        .catch(err => {
+        .catch((err) => {
             console.log(err);
             res.sendStatus(500);
         });
+};
+
+module.exports.delete = (filename) => {
+    return s3
+        .deleteObject({
+            Bucket: "socialnetworkchristopherliedtke",
+            Key: filename,
+        })
+        .promise();
 };

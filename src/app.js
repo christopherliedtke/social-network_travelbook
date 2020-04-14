@@ -101,6 +101,7 @@ export default class App extends Component {
 
                     {this.state.uploaderVisible && (
                         <Uploader
+                            imageUrl={this.state.imgUrl}
                             toggleModal={() => this.toggleModal()}
                             updateUrl={(e) => this.updateUrl(e)}
                         />

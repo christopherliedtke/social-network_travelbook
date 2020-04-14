@@ -83,7 +83,12 @@ nav {
 
 .nav-link {
     color: var(--dark-shade);
-    margin: 0 5px;
+    margin: 0 10px;
+}
+
+.nav-link:hover {
+    opacity: 1;
+    color: var(--primary);
 }
 
 .logout {
@@ -255,10 +260,16 @@ button {
     color: var(--light-shade);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-secondary:hover {
     background-color: var(--light-shade);
     color: var(--dark-shade);
     border-color: var(--dark-shade);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    color: var(--light-shade);
 }
 
 input:focus,
@@ -335,6 +346,7 @@ textarea:focus {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fill, 220px);
+    justify-content: center;
 }
 
 .friend-container {

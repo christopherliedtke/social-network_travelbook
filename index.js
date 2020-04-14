@@ -240,6 +240,18 @@ app.post(
     }
 );
 
+app.post("/delete-picture", async (req, res) => {
+    const imageUrl = req.body.imageUrl.split("/").slice(-1).join("");
+
+    try {
+        await s3.delete(imageUrl);
+        res.json({ success: true });
+    } catch (err) {
+        console.log("Error on s3.delete() on POST to /delete-picture: ", err);
+        res.json({ success: false });
+    }
+});
+
 app.post("/updateBio", async (req, res) => {
     try {
         await db.updateBio(req.session.email, req.body.bio);

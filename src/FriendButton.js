@@ -45,7 +45,6 @@ export default function (props) {
                 })
                 .catch((err) => console.log(err));
         } else if (buttonText == "Accept Friend Request") {
-            //
             axios
                 .post(`/accept-friend-request/${props.otherProfileId}`)
                 .then((response) => {
@@ -55,13 +54,21 @@ export default function (props) {
                 })
                 .catch((err) => console.log(err));
         }
-        // else if (buttonText == "End Friendship") {
-        //     //
-        // }
+    };
+
+    const btnClass = () => {
+        if (
+            buttonText === "End Friendship" ||
+            buttonText === "Cancel Friend Request"
+        ) {
+            return "btn-secondary";
+        } else {
+            return "btn-primary";
+        }
     };
 
     return (
-        <button className="btn-primary" onClick={handleClick}>
+        <button className={buttonText && btnClass()} onClick={handleClick}>
             {buttonText}
         </button>
     );

@@ -9,32 +9,41 @@ export default class Uploader extends Component {
     componentDidMount() {}
     handleChange({ target }) {
         this.setState({
-            [target.name]: target.files[0]
+            [target.name]: target.files[0],
         });
     }
     submit() {
         if (this.state.file) {
+            if (this.props.imageUrl) {
+                axios
+                    .post("/delete-picture", { imageUrl: this.props.imageUrl })
+                    .then()
+                    .catch((err) =>
+                        console.log("Error on POST to /delete-picture: ", err)
+                    );
+            }
+
             const formData = new FormData();
             formData.append("file", this.state.file);
 
             axios
                 .post("/updateProfilePicture", formData)
-                .then(response => {
+                .then((response) => {
                     this.props.updateUrl(response.data.url);
                     this.props.toggleModal();
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(
                         "Error on submit() in POST to /updateProfilePicture: ",
                         err
                     );
                     this.setState({
-                        error: true
+                        error: true,
                     });
                 });
         } else {
             this.setState({
-                error: true
+                error: true,
             });
         }
     }
@@ -59,7 +68,7 @@ export default class Uploader extends Component {
                             type="file"
                             id="file"
                             accept="image/*"
-                            onChange={e => this.handleChange(e)}
+                            onChange={(e) => this.handleChange(e)}
                         />
                         <label
                             className={this.state.file && "ready"}

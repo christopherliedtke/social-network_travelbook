@@ -85,12 +85,6 @@ export default class Bio extends Component {
         }
     }
     render() {
-        // const fullName = this.props.first + " " + this.props.last;
-        return (
-            <div className="bio">
-                {/* <h3>{fullName}</h3> */}
-                {this.getCurrentDisplay()}
-            </div>
-        );
+        return <div className="bio">{this.getCurrentDisplay()}</div>;
     }
 }
