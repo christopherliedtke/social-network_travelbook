@@ -1,8 +1,16 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" }); // e.g. 'localhost:8080 mysocialnetwork.herokuapp.com:*
-const port = process.env.PORT || 8080;
+const io = require("socket.io")(server, { origins: "localhost:8080" }); // e.g. 'localhost:8080 travelbook.herokuapp.com:*'
+
+let secrets, port;
+if (process.env.NODE_ENV == "production") {
+    secrets = process.env;
+    port = process.env.PORT;
+} else {
+    secrets = require("./utils/secrets");
+    port = 8080;
+}
 
 const compression = require("compression");
 const cryptoRandomString = require("crypto-random-string");
@@ -51,7 +59,7 @@ app.use(express.static("./public"));
 
 const cookieSession = require("cookie-session");
 const cookieSessionMiddleware = cookieSession({
-    secret: "I'm always angry.",
+    secret: secrets.COOKIE_SESSION_SECRET,
     maxAge: 1000 * 60 * 60 * 24 * 14,
 });
 app.use(cookieSessionMiddleware);
@@ -391,10 +399,12 @@ app.get("/friends-and-requests", async (req, res) => {
     res.json(friends.rows);
 });
 
-app.get("/delete-account", async (req, res) => {
+app.post("/delete-account", async (req, res) => {
+    const fileName = req.body.imageUrl.split("/").slice(-1).join("");
     const userId = req.session.userId;
 
     try {
+        await s3.delete(fileName);
         await Promise.all[
             (db.deleteFriendships(userId),
             db.deleteChatMessages(userId),

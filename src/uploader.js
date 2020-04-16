@@ -57,6 +57,7 @@ export default class Uploader extends Component {
                             <i className="fas fa-times"></i>
                         </div>
                         <h3>Choose a new profile picture!</h3>
+                        <p>max. 2MB</p>
                         {this.state.error && (
                             <div className="error">
                                 Oh, something went wrong. Please try again!

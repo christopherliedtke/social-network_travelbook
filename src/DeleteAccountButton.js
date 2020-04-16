@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "./axios";
 
-export default function DeleteAccountButton() {
+export default function DeleteAccountButton(props) {
     const [showModalDelete, setShowModalDelete] = useState(false);
     const [error, setError] = useState(false);
 
@@ -11,7 +11,7 @@ export default function DeleteAccountButton() {
 
     const deleteAccount = () => {
         axios
-            .get("/delete-account")
+            .post("/delete-account", { imageUrl: props.imgUrl })
             .then((response) => {
                 if (!response.data.success) {
                     setError(true);
