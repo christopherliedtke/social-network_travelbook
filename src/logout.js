@@ -10,9 +10,9 @@ export default class Logout extends Component {
         axios
             .get("/logout")
             .then(() => {
-                location.replace("/");
+                location.replace("/welcome#/login");
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log("Error in /logout: ", err);
             });
     }

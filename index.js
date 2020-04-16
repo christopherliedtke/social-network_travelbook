@@ -392,7 +392,19 @@ app.get("/friends-and-requests", async (req, res) => {
 });
 
 app.get("/delete-account", async (req, res) => {
-    res.json({ success: false });
+    const userId = req.session.userId;
+
+    try {
+        await Promise.all[
+            (db.deleteFriendships(userId),
+            db.deleteChatMessages(userId),
+            db.deleteUser(userId))
+        ];
+        req.session = null;
+        res.json({ success: true });
+    } catch (err) {
+        res.json({ success: false });
+    }
 });
 
 app.get("/logout", (req, res) => {

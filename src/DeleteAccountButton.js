@@ -16,7 +16,7 @@ export default function DeleteAccountButton() {
                 if (!response.data.success) {
                     setError(true);
                 } else {
-                    location.replace("/");
+                    location.replace("/welcome");
                 }
             })
             .catch();

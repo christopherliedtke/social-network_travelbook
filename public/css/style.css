@@ -404,7 +404,7 @@ textarea:focus {
 }
 
 .chat-message-container img {
-    margin: 10px;
+    margin: 0 10px;
 }
 
 .chat-message-container span {

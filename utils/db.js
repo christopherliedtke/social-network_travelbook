@@ -224,3 +224,33 @@ module.exports.getChatMessage = (messageId) => {
 
     return db.query(q, params);
 };
+
+module.exports.deleteFriendships = (id) => {
+    const q = `
+        DELETE FROM friendships
+        WHERE sender_id = $1 OR receiver_id=$1
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
+
+module.exports.deleteChatMessages = (id) => {
+    const q = `
+        DELETE FROM chat_messages
+        WHERE user_id = $1
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
+
+module.exports.deleteUser = (id) => {
+    const q = `
+        DELETE FROM users
+        WHERE id = $1
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
