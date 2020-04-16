@@ -45,6 +45,7 @@ export default function (props) {
                 })
                 .catch((err) => console.log(err));
         } else if (buttonText == "Accept Friend Request") {
+            props.updateOpenFriendRequests();
             axios
                 .post(`/accept-friend-request/${props.otherProfileId}`)
                 .then((response) => {

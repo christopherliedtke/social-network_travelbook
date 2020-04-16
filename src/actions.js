@@ -36,3 +36,17 @@ export function endFriendship(id) {
         }
     });
 }
+
+export function chatMessages(msgs) {
+    return {
+        type: "LOAD_ALL_CHAT_MESSAGES",
+        chatMessages: msgs,
+    };
+}
+
+export function chatMessage(msg) {
+    return {
+        type: "LOAD_NEW_CHAT_MESSAGE",
+        chatMessage: msg,
+    };
+}

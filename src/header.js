@@ -27,8 +27,16 @@ export default class Header extends Component {
                         <Link className="nav-link" to="/users">
                             Find People
                         </Link>
+                        <Link className="nav-link" to="/chat">
+                            Chat
+                        </Link>
                         <Link className="nav-link" to="/friends">
                             Friends
+                            {this.props.openFriendRequests > 0 ? (
+                                <span className="badge badge-secondary">
+                                    {this.props.openFriendRequests}
+                                </span>
+                            ) : null}
                         </Link>
                     </nav>
                     <Link to="/">

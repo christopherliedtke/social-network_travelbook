@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
+const server = require("http").Server(app);
+const io = require("socket.io")(server, { origins: "localhost:8080" }); // e.g. 'localhost:8080 mysocialnetwork.herokuapp.com:*
 const port = process.env.PORT || 8080;
+
 const compression = require("compression");
-const ses = require("./utils/ses");
 const cryptoRandomString = require("crypto-random-string");
 const db = require("./utils/db");
 const { hash, compare } = require("./utils/bcrypt");
+const ses = require("./utils/ses");
 const s3 = require("./utils/s3");
 const conf = require("./config");
 const multer = require("multer");
@@ -47,12 +50,14 @@ app.use(express.json());
 app.use(express.static("./public"));
 
 const cookieSession = require("cookie-session");
-app.use(
-    cookieSession({
-        secret: "I'm always angry.",
-        maxAge: 1000 * 60 * 60 * 24 * 14,
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: "I'm always angry.",
+    maxAge: 1000 * 60 * 60 * 24 * 14,
+});
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 const csurf = require("csurf");
 app.use(csurf());
@@ -213,7 +218,16 @@ app.get("/user", async (req, res) => {
 
     try {
         const response = await db.getUser(email);
-        res.json(response.rows[0]);
+        const openFriendRequests = await db.getNumberOpenFriendRequests(
+            response.rows[0].id
+        );
+
+        const responseObj = {
+            ...response.rows[0],
+            ...openFriendRequests.rows[0],
+        };
+
+        res.json(responseObj);
     } catch (err) {
         console.log("Error on getUser() on POST to /user: ", err);
         res.json({ success: false });
@@ -241,10 +255,10 @@ app.post(
 );
 
 app.post("/delete-picture", async (req, res) => {
-    const imageUrl = req.body.imageUrl.split("/").slice(-1).join("");
+    const fileName = req.body.imageUrl.split("/").slice(-1).join("");
 
     try {
-        await s3.delete(imageUrl);
+        await s3.delete(fileName);
         res.json({ success: true });
     } catch (err) {
         console.log("Error on s3.delete() on POST to /delete-picture: ", err);
@@ -292,7 +306,14 @@ app.get("/findPeople", async (req, res) => {
         } else {
             response = await db.getUsersByName(req.query.q);
         }
-        res.json(response.rows);
+
+        const responseObj = response.rows.filter((user) => {
+            if (user.id != req.session.userId) {
+                return user;
+            }
+        });
+
+        res.json(responseObj);
     } catch (err) {
         console.log("Error on get*Users*() on GET to /findPeople: ", err);
         res.json({ success: false });
@@ -370,6 +391,10 @@ app.get("/friends-and-requests", async (req, res) => {
     res.json(friends.rows);
 });
 
+app.get("/delete-account", async (req, res) => {
+    res.json({ success: false });
+});
+
 app.get("/logout", (req, res) => {
     req.session = null;
     res.json({ success: true });
@@ -383,6 +408,37 @@ app.get("*", (req, res) => {
     }
 });
 
-app.listen(port, function () {
+server.listen(port, function () {
     console.log(`-----> Server is listening to ${port}...`);
+});
+
+io.on("connection", async (socket) => {
+    console.log(`-----> A socket with the id ${socket.id} connected.`);
+
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+
+    try {
+        const allChatMessages = await db.getChatMessages();
+        io.sockets.emit("chatMessages", allChatMessages.rows);
+    } catch (err) {
+        console.log("Error on getChatMessages(): ", err);
+    }
+
+    socket.on("addNewMessage", async (message) => {
+        try {
+            const messageId = await db.addNewMessage(userId, message);
+            const newMessage = await db.getChatMessage(messageId.rows[0].id);
+            io.sockets.emit("chatMessage", newMessage.rows[0]);
+        } catch (err) {
+            console.log("Error on addNewMessage(): ", err);
+        }
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`-----> A socket with the id ${socket.id} disconnected.`);
+    });
 });

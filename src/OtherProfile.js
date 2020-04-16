@@ -28,25 +28,31 @@ export default class OtherProfile extends Component {
     }
 
     render() {
-        // const fullName = this.state.first + " " + this.state.last;
         return (
             <section className="profile">
                 <div className="container box">
                     <h3>
                         {this.state.first} {this.state.last}
                     </h3>
-                    <div>
-                        <ProfilePicture
-                            first={this.state.first}
-                            last={this.state.last}
-                            imgUrl={this.state.imgUrl}
-                            width="300px"
-                        />
+                    <div className="profile-container">
+                        <div>
+                            <ProfilePicture
+                                first={this.state.first}
+                                last={this.state.last}
+                                imgUrl={this.state.imgUrl}
+                                width="300px"
+                            />
+                        </div>
+                        <div className="bio">
+                            <div className="bio-txt-box">{this.state.bio}</div>
+                            <FriendButton
+                                otherProfileId={this.props.match.params.id}
+                                updateOpenFriendRequests={() =>
+                                    this.props.updateOpenFriendRequests()
+                                }
+                            />
+                        </div>
                     </div>
-                    <div className="bio">
-                        <div className="bio-txt-box">{this.state.bio}</div>
-                    </div>
-                    <FriendButton otherProfileId={this.props.match.params.id} />
                 </div>
             </section>
         );

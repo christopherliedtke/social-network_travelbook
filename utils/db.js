@@ -176,3 +176,51 @@ module.exports.getFriendsRequests = (id) => {
 
     return db.query(q, params);
 };
+
+module.exports.getNumberOpenFriendRequests = (id) => {
+    const q = `
+        SELECT 
+        COUNT (*)
+        FROM friendships
+        WHERE (receiver_id = $1 AND accepted = FALSE)
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
+
+module.exports.getChatMessages = () => {
+    const q = `
+        SELECT first_name, last_name, image_url, users.id AS user_id, chat_messages.created_at, message, chat_messages.id AS message_id
+        FROM chat_messages
+        JOIN users
+        ON chat_messages.user_id = users.id
+        ORDER BY chat_messages.created_at
+    `;
+
+    return db.query(q);
+};
+
+module.exports.addNewMessage = (id, message) => {
+    const q = `
+        INSERT INTO chat_messages (user_id, message)
+        VALUES ($1, $2)
+        RETURNING id
+    `;
+    const params = [id, message];
+
+    return db.query(q, params);
+};
+
+module.exports.getChatMessage = (messageId) => {
+    const q = `
+        SELECT first_name, last_name, image_url, users.id AS user_id, chat_messages.created_at, message, chat_messages.id AS message_id
+        FROM chat_messages
+        JOIN users
+        ON chat_messages.user_id = users.id
+        WHERE chat_messages.id = $1
+    `;
+    const params = [messageId];
+
+    return db.query(q, params);
+};

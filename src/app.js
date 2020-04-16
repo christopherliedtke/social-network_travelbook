@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import OtherProfile from "./OtherProfile";
 import FindPeople from "./FindPeople";
 import Friends from "./Friends";
+import Chat from "./Chat";
 
 export default class App extends Component {
     constructor() {
@@ -17,13 +18,14 @@ export default class App extends Component {
         axios
             .get("/user")
             .then((response) => {
-                const imgUrl =
-                    response.data["image_url"] || "img/profile_default.png";
+                const imgUrl = response.data["image_url"];
                 this.setState({
+                    id: response.data.id,
                     first: response.data["first_name"],
                     last: response.data["last_name"],
                     imgUrl,
                     bio: response.data.bio,
+                    openFriendRequests: parseInt(response.data.count),
                     uploaderVisible: false,
                 });
             })
@@ -52,6 +54,12 @@ export default class App extends Component {
         });
     }
 
+    updateOpenFriendRequests() {
+        this.setState({
+            openFriendRequests: this.state.openFriendRequests - 1,
+        });
+    }
+
     render() {
         return (
             <BrowserRouter>
@@ -60,6 +68,7 @@ export default class App extends Component {
                         first={this.state.first}
                         last={this.state.last}
                         imgUrl={this.state.imgUrl}
+                        openFriendRequests={this.state.openFriendRequests}
                     />
 
                     <Route
@@ -69,6 +78,9 @@ export default class App extends Component {
                                 key={props.match.url}
                                 match={props.match}
                                 history={props.history}
+                                updateOpenFriendRequests={() =>
+                                    this.updateOpenFriendRequests()
+                                }
                             />
                         )}
                     />
@@ -80,7 +92,14 @@ export default class App extends Component {
 
                     <Route
                         path="/friends"
-                        render={(props) => <Friends key={props.match.url} />}
+                        render={(props) => (
+                            <Friends
+                                key={props.match.url}
+                                updateOpenFriendRequests={() =>
+                                    this.updateOpenFriendRequests()
+                                }
+                            />
+                        )}
                     />
 
                     <Route
@@ -97,6 +116,12 @@ export default class App extends Component {
                                 toggleModal={() => this.toggleModal()}
                             />
                         )}
+                    />
+
+                    <Route
+                        exact
+                        path="/chat"
+                        render={() => <Chat userId={this.state.id} />}
                     />
 
                     {this.state.uploaderVisible && (

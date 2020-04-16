@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 import { Link } from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
+import FriendButton from "./FriendButton";
 
 export default function FindPeople() {
     const [searchString, setSearchString] = useState("");
@@ -52,6 +53,10 @@ export default function FindPeople() {
                                 key={searchResult.id}
                             >
                                 <Link to={`/user/${searchResult.id}`}>
+                                    <p className="text-center">
+                                        {searchResult["first_name"]}{" "}
+                                        {searchResult["last_name"]}
+                                    </p>
                                     <ProfilePicture
                                         first={searchResult["first_name"]}
                                         last={searchResult["last_name"]}
@@ -59,11 +64,10 @@ export default function FindPeople() {
                                         width="180px"
                                         height="180px"
                                     />
-                                    <p>
-                                        {searchResult["first_name"]}{" "}
-                                        {searchResult["last_name"]}
-                                    </p>
                                 </Link>
+                                <FriendButton
+                                    otherProfileId={searchResult.id}
+                                />
                             </div>
                         );
                     })}

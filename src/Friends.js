@@ -9,7 +9,7 @@ import {
 
 import ProfilePicture from "./ProfilePicture";
 
-export default function Friends() {
+export default function Friends(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -91,20 +91,22 @@ export default function Friends() {
                                     </Link>
                                     <button
                                         className="btn-primary"
-                                        onClick={() =>
+                                        onClick={() => {
                                             dispatch(
                                                 acceptFriendRequest(request.id)
-                                            )
-                                        }
+                                            );
+                                            props.updateOpenFriendRequests();
+                                        }}
                                     >
                                         Accept Friend Request
                                     </button>
                                     <button
                                         style={{ marginTop: 0 }}
                                         className="btn-secondary"
-                                        onClick={() =>
-                                            dispatch(endFriendship(request.id))
-                                        }
+                                        onClick={() => {
+                                            dispatch(endFriendship(request.id));
+                                            props.updateOpenFriendRequests();
+                                        }}
                                     >
                                         Reject Friend Request
                                     </button>
