@@ -427,6 +427,7 @@ app.post("/delete-account", async (req, res) => {
         await Promise.all[
             (db.deleteFriendships(userId),
             db.deleteChatMessages(userId),
+            db.deletePrivateChatMessages(userId),
             db.deleteUser(userId))
         ];
         req.session = null;

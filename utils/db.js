@@ -292,3 +292,13 @@ module.exports.getPrivateChatMessage = (messageId) => {
 
     return db.query(q, params);
 };
+
+module.exports.deletePrivateChatMessages = (id) => {
+    const q = `
+        DELETE FROM private_chat_messages
+        WHERE sender_id = $1
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
