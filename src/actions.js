@@ -50,3 +50,17 @@ export function chatMessage(msg) {
         chatMessage: msg,
     };
 }
+
+export function privateChatMessages(msgs) {
+    return {
+        type: "LOAD_ALL_PRIVATE_CHAT_MESSAGES",
+        chatMessages: msgs,
+    };
+}
+
+export function privateChatMessage(msg) {
+    return {
+        type: "LOAD_NEW_PRIVATE_CHAT_MESSAGE",
+        chatMessage: msg,
+    };
+}

@@ -37,5 +37,20 @@ export default function reducer(state = {}, action) {
             chatMessages: [...state.chatMessages, action.chatMessage],
         };
     }
+    if (action.type == "LOAD_ALL_PRIVATE_CHAT_MESSAGES") {
+        state = {
+            ...state,
+            privateChatMessages: action.chatMessages,
+        };
+    }
+    if (action.type == "LOAD_NEW_PRIVATE_CHAT_MESSAGE") {
+        state = {
+            ...state,
+            privateChatMessages: [
+                ...state.privateChatMessages,
+                action.chatMessage,
+            ],
+        };
+    }
     return state;
 }

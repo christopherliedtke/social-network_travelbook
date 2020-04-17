@@ -81,6 +81,7 @@ export default class App extends Component {
                                 updateOpenFriendRequests={() =>
                                     this.updateOpenFriendRequests()
                                 }
+                                userId={this.state.id}
                             />
                         )}
                     />

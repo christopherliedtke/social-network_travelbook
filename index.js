@@ -293,7 +293,24 @@ app.get("/user/:id.json", (req, res) => {
         db.getUserById(req.params.id)
             .then((response) => {
                 if (response.rows[0]) {
-                    res.json({ data: response.rows[0] });
+                    db.checkFriendshipStatus(
+                        req.session.userId,
+                        response.rows[0].id
+                    )
+                        .then((friendStatus) => {
+                            res.json({
+                                ...response.rows[0],
+                                friendStatus: friendStatus.rows[0]
+                                    ? friendStatus.rows[0].accepted
+                                    : false,
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(
+                                "Error on checkFriendshipStatus() in GET to /user/:id.json: ",
+                                err
+                            );
+                        });
                 } else {
                     res.json({ redirect: true });
                 }
@@ -436,6 +453,8 @@ server.listen(port, function () {
     console.log(`-----> Server is listening to ${port}...`);
 });
 
+let onlineUsers = {};
+
 io.on("connection", async (socket) => {
     console.log(`-----> A socket with the id ${socket.id} connected.`);
 
@@ -445,9 +464,17 @@ io.on("connection", async (socket) => {
 
     const userId = socket.request.session.userId;
 
+    onlineUsers[socket.id] = userId;
+
     try {
         const allChatMessages = await db.getChatMessages();
+        const allPrivateChatMessages = await db.getPrivateChatMessages(userId);
+
         io.sockets.emit("chatMessages", allChatMessages.rows);
+        io.to(socket.id).emit(
+            "privateChatMessages",
+            allPrivateChatMessages.rows
+        );
     } catch (err) {
         console.log("Error on getChatMessages(): ", err);
     }
@@ -462,7 +489,32 @@ io.on("connection", async (socket) => {
         }
     });
 
+    socket.on("addNewPrivateMessage", async ({ message, receiverId }) => {
+        try {
+            const messageId = await db.addNewPrivateMessage(
+                userId,
+                receiverId,
+                message
+            );
+            const newMessage = await db.getPrivateChatMessage(
+                messageId.rows[0].id
+            );
+
+            for (const key in onlineUsers) {
+                if (
+                    onlineUsers[key] == userId ||
+                    onlineUsers[key] == receiverId
+                ) {
+                    io.to(key).emit("privateChatMessage", newMessage.rows[0]);
+                }
+            }
+        } catch (err) {
+            console.log("Error on addNewPrivateMessage(): ", err);
+        }
+    });
+
     socket.on("disconnect", () => {
+        delete onlineUsers[socket.id];
         console.log(`-----> A socket with the id ${socket.id} disconnected.`);
     });
 });

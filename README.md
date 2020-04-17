@@ -8,7 +8,7 @@ In 'Find People' the user gets displayed the most recently registered users init
 
 On the 'Friends' page a user can see his/her current friendships and the open friend requests initiated by the user. The user can navigate to the other users' profiles or change the friend status directly.
 
-On the 'Chat' page the user finds an open chatroom for all users. Users who are logged in can read and write messages which will appear instantly for online user in the chatroom.
+On the 'Chat' page the user finds an open chatroom for all users. Users who are logged in can read and write messages which will appear instantly for online user in the chatroom. Through another friend's profile page users can have a private chat room between those two users only.
 
 ## Key Features
 
@@ -22,6 +22,7 @@ On the 'Chat' page the user finds an open chatroom for all users. Users who are 
 -   Make friend request / cancel friend requests / reject friend requests / end friendship in different components
 -   Indication of open friend requests in the header
 -   Chatroom for all users with immediate rendering of new messages through socket.io
+-   Private chatroom for two individual users who are befriended with immediate rendering of new messages through socket.io
 
 ## Technologies
 

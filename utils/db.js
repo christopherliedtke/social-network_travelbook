@@ -254,3 +254,41 @@ module.exports.deleteUser = (id) => {
 
     return db.query(q, params);
 };
+
+module.exports.getPrivateChatMessages = (id) => {
+    const q = `
+        SELECT first_name, last_name, image_url, sender_id, receiver_id, private_chat_messages.created_at, message, private_chat_messages.id AS message_id
+        FROM private_chat_messages
+        JOIN users
+        ON private_chat_messages.sender_id = users.id
+        WHERE (sender_id = $1 OR receiver_id = $1)
+        ORDER BY private_chat_messages.created_at
+    `;
+    const params = [id];
+
+    return db.query(q, params);
+};
+
+module.exports.addNewPrivateMessage = (senderId, receiverId, message) => {
+    const q = `
+        INSERT INTO private_chat_messages (sender_id, receiver_id, message)
+        VALUES ($1, $2, $3)
+        RETURNING id
+    `;
+    const params = [senderId, receiverId, message];
+
+    return db.query(q, params);
+};
+
+module.exports.getPrivateChatMessage = (messageId) => {
+    const q = `
+        SELECT first_name, last_name, image_url, sender_id, receiver_id, private_chat_messages.created_at, message, private_chat_messages.id AS message_id
+        FROM private_chat_messages
+        JOIN users
+        ON private_chat_messages.sender_id = users.id
+        WHERE private_chat_messages.id = $1
+    `;
+    const params = [messageId];
+
+    return db.query(q, params);
+};
