@@ -379,9 +379,9 @@ textarea:focus {
 }
 
 .chat-messages-container {
-    height: 66vh;
+    height: 60vh;
     max-height: 500px;
-    width: 80vw;
+    width: 90vw;
     max-width: 500px;
     overflow-y: scroll;
     border-radius: 5px;
@@ -390,12 +390,17 @@ textarea:focus {
 }
 
 .chat textarea {
-    width: 80vw;
+    width: 90vw;
     max-width: 500px;
+}
+
+.chat h1 {
+    margin-top: 0;
 }
 
 .chat-message-container {
     display: flex;
+    align-items: center;
     margin: 10px 0;
 }
 
@@ -478,5 +483,17 @@ textarea:focus {
 
     .bio {
         margin: 0;
+    }
+
+    .chat {
+        padding: 5px;
+    }
+
+    .chat .container {
+        padding: 5px;
+    }
+
+    .chat h1 {
+        margin: 20px 0;
     }
 }

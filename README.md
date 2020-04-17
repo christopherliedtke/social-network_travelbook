@@ -13,7 +13,7 @@ On the 'Chat' page the user finds an open chatroom for all users. Users who are 
 ## Key Features
 
 -   SPA with automatic rerendering without page reload
--   Register / Login / Reset Password functionality
+-   Register / Login / Logout / Reset Password functionality
 -   Sending email through AWS SES to fetch code for password reset
 -   Profile Picture - Image Upload to AWS S3 bucket
 -   Add/Edit own biography text

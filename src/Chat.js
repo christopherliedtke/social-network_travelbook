@@ -28,7 +28,7 @@ export default function Chat(props) {
     return (
         <section className="chat">
             <div className="container box">
-                <h1 className="text-center">Chat</h1>
+                <h1 className="text-center">Public Chat</h1>
                 <div className="chat-messages-container" ref={elemRef}>
                     {chatMessages &&
                         chatMessages.map((msg) => {
@@ -66,7 +66,7 @@ export default function Chat(props) {
                 </div>
                 <textarea
                     name="message"
-                    rows="3"
+                    rows="2"
                     placeholder="Write message..."
                     onKeyDown={keyCheck}
                 ></textarea>
