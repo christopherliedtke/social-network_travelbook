@@ -246,9 +246,9 @@ textarea:focus {
 }
 
 #file-label.ready {
-    background-color: #05be05;
-    border-color: transparent;
-    color: var(--light-shade);
+    background-color: transparent;
+    border-color: var(--dark-shade);
+    color: var(--dark-shade);
 }
 
 button {
