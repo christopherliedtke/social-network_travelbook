@@ -38,6 +38,4 @@ On the 'Chat' page the user finds an open chatroom for all users. Users who are 
 
 ## Demo
 
-Link to Heroku...
-
-GIFs
+[Live Demo](https://travelbook-network.herokuapp.com/)
