@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const server = require("http").Server(app);
-const io = require("socket.io")(server, { origins: "localhost:8080" }); // e.g. 'localhost:8080 travelbook.herokuapp.com:*'
+const io = require("socket.io")(server, {
+    origins: "localhost:8080 travelbook-network.herokuapp.com:*",
+}); // e.g. 'localhost:8080 travelbook.herokuapp.com:*'
 
 let secrets, port;
 if (process.env.NODE_ENV == "production") {
