@@ -445,14 +445,17 @@ textarea:focus {
     bottom: 0;
     right: 5vw;
     padding: 40px 10px 10px 10px;
-    /* width: 90vw;
+    width: 90vw;
     max-width: 500px;
-    height: 80vh;
-    max-height: 500px; */
     border-radius: 5px;
     border: solid 1px #eee;
     background-color: rgba(250, 250, 250, 1);
     box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.private-chat .chat-messages-container,
+.private-chat textarea {
+    width: 100%;
 }
 
 .badge {

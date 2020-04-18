@@ -82,7 +82,7 @@ export default class Uploader extends Component {
                             className="btn-primary"
                             onClick={() => this.submit()}
                         >
-                            Update
+                            Upload
                         </button>
                     </div>
                 </div>
