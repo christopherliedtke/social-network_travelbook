@@ -24,7 +24,7 @@ export default function DeleteAccountButton(props) {
 
     return (
         <>
-            <button className="btn-neutral" onClick={toggleModal}>
+            <button className="btn-neutral btn-delete" onClick={toggleModal}>
                 Delete Account
             </button>
             {showModalDelete ? (

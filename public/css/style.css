@@ -283,6 +283,10 @@ button {
     border-color: var(--secondary);
 }
 
+.btn-delete {
+    align-self: flex-start;
+}
+
 input:focus,
 button:focus,
 textarea:focus {
@@ -343,6 +347,7 @@ textarea:focus {
 
 .position-relative {
     position: relative;
+    width: min-content;
 }
 
 .edit-symbol {

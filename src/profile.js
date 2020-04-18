@@ -24,7 +24,6 @@ export default function Profile(props) {
                             imgUrl={props.imgUrl}
                             width="300px"
                         />
-                        <DeleteAccountButton imgUrl={props.imgUrl} />
                     </div>
                     <Bio
                         first={props.first}
@@ -33,6 +32,7 @@ export default function Profile(props) {
                         updateBio={(e) => props.updateBio(e)}
                     />
                 </div>
+                <DeleteAccountButton imgUrl={props.imgUrl} />
             </div>
         </section>
     );
